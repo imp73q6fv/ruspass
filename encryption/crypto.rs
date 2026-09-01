@@ -1,4 +1,4 @@
-use argon2::{Argon2, PasswordHasher};
+use argon2::{Argon2, Algorithm, Version, Params};
 use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce, AeadInPlace, KeyInit};
 use rand::RngCore;
 use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64};
@@ -29,11 +29,6 @@ pub struct CryptoService;
 impl CryptoService {
     /// Derive a key from the master password using Argon2id
     pub fn derive_key(password: &str, salt: &[u8]) -> Result<Vec<u8>, CryptoError> {
-        // Use Argon2id with custom parameters for better control
-        use argon2::Algorithm;
-        use argon2::Version;
-        use argon2::Params;
-        
         let argon2 = Argon2::new(
             Algorithm::Argon2id,
             Version::V0x13,
@@ -78,7 +73,7 @@ impl CryptoService {
         
         let mut buffer = data.to_vec();
         cipher.encrypt_in_place(nonce_obj, b"", &mut buffer)
-            .map_err(|e: chacha20poly1305::Error| CryptoError::Encryption(e.to_string()))?;
+            .map_err(|e| CryptoError::Encryption(e.to_string()))?;
         
         Ok(buffer)
     }
@@ -97,7 +92,7 @@ impl CryptoService {
         
         let mut buffer = encrypted_data.to_vec();
         cipher.decrypt_in_place(nonce_obj, b"", &mut buffer)
-            .map_err(|e: chacha20poly1305::Error| CryptoError::Decryption(e.to_string()))?;
+            .map_err(|e| CryptoError::Decryption(e.to_string()))?;
         
         Ok(buffer)
     }
