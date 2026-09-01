@@ -30,8 +30,12 @@ impl CryptoService {
     /// Derive a key from the master password using Argon2id
     pub fn derive_key(password: &str, salt: &[u8]) -> Result<Vec<u8>, CryptoError> {
         let argon2 = Argon2::default();
-        let salt_str = SaltString::from_b64(&BASE64.encode(salt))
-            .map_err(|e| CryptoError::KeyDerivation(e.to_string()))?;
+        
+        // Create salt string directly from bytes without base64 encoding
+        // SaltString expects a base64-encoded string without padding
+        use password_hash::Salt;
+        let salt_str = Salt::from_b64(&BASE64.encode(salt).trim_end_matches('='))
+            .map_err(|e| CryptoError::KeyDerivation(format!("salt invalid: {}", e)))?;
         
         let hash = argon2.hash_password(password.as_bytes(), &salt_str)
             .map_err(|e| CryptoError::KeyDerivation(e.to_string()))?;

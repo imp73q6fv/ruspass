@@ -1,4 +1,4 @@
-# RusPass Makefile
+# RusPass Password Manager - Makefile
 # Builds the Rust backend and Go frontend for Linux
 
 .PHONY: all build-backend build-frontend clean install-deps run help
@@ -6,13 +6,9 @@
 # Default target
 all: build-backend build-frontend
 
-# Configuration - Updated for flat structure
-BACKEND_TARGET := ./target/release/ruspass_backend
+# Configuration
+BACKEND_TARGET := ./ruspass_backend
 FRONTEND_TARGET := ./ruspass_frontend
-
-# Detect system architecture for Qt paths
-ARCH := $(shell uname -m)
-QT_LIB_PATH := /usr/lib/$(shell gcc -dumpmachine)/qt5/plugins
 
 # Build the Rust backend (release mode for production)
 build-backend:
@@ -23,7 +19,7 @@ build-backend:
 # Build the Go frontend with Qt bindings
 build-frontend:
 	@echo "=== Building Go Frontend ==="
-	go build -o ruspass_frontend .
+	cd UI_UX && go build -o ../$(FRONTEND_TARGET) .
 	@echo "Frontend built successfully: $(FRONTEND_TARGET)"
 
 # Install system dependencies (requires sudo)
@@ -53,15 +49,15 @@ install-deps:
 install-go-qt:
 	@echo "=== Installing Go Qt Bindings ==="
 	go get -d github.com/therecipe/qt/cmd/...
-	$(shell go env GOPATH)/bin/qtdeploy build desktop
+	$$(go env GOPATH)/bin/qtdeploy build desktop
 	@echo "Go Qt bindings installed successfully."
 
 # Clean build artifacts
 clean:
 	@echo "=== Cleaning Build Artifacts ==="
 	cargo clean
+	rm -f ./ruspass_backend
 	rm -f ./ruspass_frontend
-	rm -rf ./deploy
 	rm -f ruspass.db
 	@echo "Clean complete."
 
@@ -72,10 +68,10 @@ run: build-backend
 	@echo "Demo complete."
 
 # Run in development mode (debug builds)
-dev: 
+dev:
 	@echo "=== Building in Development Mode ==="
 	cargo build
-	go build -o ruspass_frontend .
+	cd UI_UX && go build -o ../ruspass_frontend .
 	@echo "Development builds complete."
 
 # Show help
