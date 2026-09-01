@@ -1,9 +1,41 @@
 ```
-# Rust/Cargo
-target/
-**/*.rs.bk
-*.lock
+# Build artifacts
+build/
+*.tar.gz
 
-# Database
-ruspass.db
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg-info/
 ```
