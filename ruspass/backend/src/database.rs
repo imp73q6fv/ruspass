@@ -5,10 +5,7 @@ use crate::crypto::{CryptoService, CryptoError};
 
 // Helper function to convert CryptoError to rusqlite::Error
 fn crypto_to_sqlite_error(e: CryptoError) -> rusqlite::Error {
-    rusqlite::Error::SqliteFailure(
-        rusqlite::ffi::Error::new(rusqlite::ffi::SQLITE_ERROR),
-        Some(e.to_string()),
-    )
+    e.into()
 }
 
 pub struct DatabaseService {
