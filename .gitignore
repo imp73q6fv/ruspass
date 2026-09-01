@@ -1,29 +1,26 @@
 ```
-# Dependencies
-node_modules/
-vendor/
+# Rust compilation artifacts
 target/
-.cargo/
+Cargo.lock
 
-# Compiled files
+# Go compilation artifacts
 *.o
-*.obj
 *.a
-*.lib
 *.so
 *.dylib
 *.dll
 *.exe
 
-# Rust specific
-Cargo.lock
-**/*.rs.bk
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.egg-info/
+.Python
 
-# Go specific
-*.mod
-*.sum
-!go.mod
-!go.sum
+# Database file
+ruspass.db
 
 # Logs and temp files
 *.log
@@ -31,18 +28,29 @@ Cargo.lock
 *.swp
 *.swo
 
-# Editors
+# Environment files
+.env
+.env.local
+*.env.*
+
+# Editors and IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Environment
-.env
-.env.local
-*.env.*
-
-# OS generated
+# OS generated files
 .DS_Store
 Thumbs.db
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Build artifacts
+dist/
+build/
+*.out
+*.bin
 ```

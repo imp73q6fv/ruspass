@@ -1,6 +1,17 @@
-mod crypto;
-mod database;
-mod models;
+// RusPass Password Manager - Main Entry Point
+// Include modules from their respective directories
+
+mod crypto {
+    include!("../encryption/crypto.rs");
+}
+
+mod database {
+    include!("../database/database.rs");
+}
+
+mod models {
+    include!("../encryption/models.rs");
+}
 
 use database::DatabaseService;
 use crypto::CryptoService;

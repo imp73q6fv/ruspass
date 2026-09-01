@@ -1,7 +1,7 @@
 use rusqlite::{Connection, params};
 use std::time::{SystemTime, UNIX_EPOCH};
-use crate::models::PasswordEntry;
-use crate::crypto::{CryptoService, CryptoError};
+use super::models::PasswordEntry;
+use super::crypto::{CryptoService, CryptoError};
 
 // Helper function to convert CryptoError to rusqlite::Error
 fn crypto_to_sqlite_error(e: CryptoError) -> rusqlite::Error {
