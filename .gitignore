@@ -1,56 +1,60 @@
 ```
-# Rust compilation artifacts
+# Dependencies
 target/
-Cargo.lock
+**/target/
 
-# Go compilation artifacts
-*.o
-*.a
+# Compiled binaries
+*.exe
+*.dll
 *.so
 *.dylib
-*.dll
-*.exe
+*.a
+*.lib
 
-# Dependencies
-node_modules/
-venv/
-.venv/
-__pycache__/
-*.egg-info/
-.Python
+# Go build artifacts
+**/*.a
+**/*.so
+**/*.dylib
+**/*.dll
+**/*.exe
 
-# Database file
-ruspass.db
+# Rust build artifacts
+**/*.rlib
+**/*.dSYM/
+**/deps/
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
-*.swo
 
-# Environment files
+# Environment
 .env
 .env.local
-*.env.*
+.env.*
+**/.env
+**/.env.local
+**/.env.*
 
-# Editors and IDEs
+# Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS generated files
-.DS_Store
-Thumbs.db
+# Temp files
+*.tmp
+*.temp
 
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
 
-# Build artifacts
+# MyPy cache
+.mypy_cache/
+.pytest_cache/
+
+# Distribution artifacts
 dist/
 build/
-*.out
-*.bin
+*.egg-info/
 ```
