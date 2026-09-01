@@ -1,4 +1,4 @@
-use argon2::{Argon2, PasswordHasher, password_hash::SaltString};
+use argon2::{Argon2, PasswordHasher};
 use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce, AeadInPlace, KeyInit};
 use rand::RngCore;
 use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64};
@@ -29,18 +29,25 @@ pub struct CryptoService;
 impl CryptoService {
     /// Derive a key from the master password using Argon2id
     pub fn derive_key(password: &str, salt: &[u8]) -> Result<Vec<u8>, CryptoError> {
-        let argon2 = Argon2::default();
+        // Use Argon2id with custom parameters for better control
+        use argon2::Algorithm;
+        use argon2::Version;
+        use argon2::Params;
         
-        // Create salt string from bytes - SaltString expects base64-encoded bytes without padding
-        let salt_b64 = BASE64.encode(salt);
-        let salt_b64_trimmed = salt_b64.trim_end_matches('=');
-        let salt_string = SaltString::from_b64(salt_b64_trimmed)
-            .map_err(|e| CryptoError::KeyDerivation(format!("salt invalid: {}", e)))?;
+        let argon2 = Argon2::new(
+            Algorithm::Argon2id,
+            Version::V0x13,
+            Params::new(32768, 3, 4, Some(32)).unwrap(),
+        );
         
-        let hash = argon2.hash_password(password.as_bytes(), &salt_string)
-            .map_err(|e| CryptoError::KeyDerivation(e.to_string()))?;
+        // Create output buffer for the derived key (32 bytes)
+        let mut out = [0u8; 32];
         
-        Ok(hash.hash.unwrap().as_bytes().to_vec())
+        // Hash password into output buffer
+        argon2.hash_password_into(password.as_bytes(), salt, &mut out)
+            .map_err(|e| CryptoError::KeyDerivation(format!("Argon2 hashing failed: {}", e)))?;
+        
+        Ok(out.to_vec())
     }
 
     /// Generate a random salt for key derivation
