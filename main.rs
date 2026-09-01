@@ -2,15 +2,15 @@
 // Include modules from their respective directories
 
 mod crypto {
-    include!("../encryption/crypto.rs");
+    include!("encryption/crypto.rs");
 }
 
 mod database {
-    include!("../database/database.rs");
+    include!("database/database.rs");
 }
 
 mod models {
-    include!("../encryption/models.rs");
+    include!("encryption/models.rs");
 }
 
 use database::DatabaseService;
