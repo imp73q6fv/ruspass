@@ -1,6 +1,8 @@
 // RusPass Password Manager - Main Entry Point
 // Include modules from their respective directories
 
+#![allow(dead_code)]
+
 mod crypto {
     include!("encryption/crypto.rs");
 }
