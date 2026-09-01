@@ -1,10 +1,27 @@
 ```
-# Database files
-ruspass.db
-
-# Binary/executable files
-ruspass_frontend
+# Rust/Cargo build artifacts
+target/
+**/*.rs.bk
 
 # Dependencies
-go.sum
+Cargo.lock
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```

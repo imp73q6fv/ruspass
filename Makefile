@@ -7,7 +7,7 @@
 all: build-backend build-frontend
 
 # Configuration
-BACKEND_TARGET := ./ruspass_backend
+BACKEND_TARGET := ./target/release/ruspass
 FRONTEND_TARGET := ./ruspass_frontend
 
 # Build the Rust backend (release mode for production)
@@ -56,15 +56,14 @@ install-go-qt:
 clean:
 	@echo "=== Cleaning Build Artifacts ==="
 	cargo clean
-	rm -f ./ruspass_backend
-	rm -f ./ruspass_frontend
+	rm -f $(FRONTEND_TARGET)
 	rm -f ruspass.db
 	@echo "Clean complete."
 
 # Run the application (backend demo)
 run: build-backend
 	@echo "=== Starting RusPass Backend Demo ==="
-	./$(BACKEND_TARGET)
+	$(BACKEND_TARGET)
 	@echo "Demo complete."
 
 # Run in development mode (debug builds)
