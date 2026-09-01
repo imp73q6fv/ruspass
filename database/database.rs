@@ -1,3 +1,5 @@
+#[allow(dead_code)]
+
 use rusqlite::{Connection, params};
 use std::time::{SystemTime, UNIX_EPOCH};
 use super::models::PasswordEntry;
