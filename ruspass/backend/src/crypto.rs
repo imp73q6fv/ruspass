@@ -14,6 +14,16 @@ pub enum CryptoError {
     KeyDerivation(String),
 }
 
+// Implement From<CryptoError> for rusqlite::Error to allow ? operator conversion
+impl From<CryptoError> for rusqlite::Error {
+    fn from(e: CryptoError) -> Self {
+        rusqlite::Error::SqliteFailure(
+            rusqlite::ffi::Error::new(rusqlite::ffi::SQLITE_ERROR),
+            Some(e.to_string()),
+        )
+    }
+}
+
 pub struct CryptoService;
 
 impl CryptoService {

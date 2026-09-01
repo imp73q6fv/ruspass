@@ -1,17 +1,35 @@
 ```
 # Dependencies
-Cargo.lock
-go.sum
-go.mod
-
-# Build artifacts
+node_modules/
+vendor/
 target/
-**/target/
+.cargo/
 
-# Environment
-.env
-.env.local
-*.env.*
+# Compiled files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Rust specific
+Cargo.lock
+**/*.rs.bk
+
+# Go specific
+*.mod
+*.sum
+!go.mod
+!go.sum
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
 
 # Editors
 .vscode/
@@ -19,48 +37,12 @@ target/
 *.swp
 *.swo
 
-# Logs
-*.log
+# Environment
+.env
+.env.local
+*.env.*
 
-# Temporary files
-*.tmp
+# OS generated
 .DS_Store
 Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage*
-.nox/
-.pytest_cache/
-.mypy_cache/
-
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Go
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.prof
 ```
