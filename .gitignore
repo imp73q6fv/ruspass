@@ -1,60 +1,10 @@
 ```
+# Database files
+ruspass.db
+
+# Binary/executable files
+ruspass_frontend
+
 # Dependencies
-target/
-**/target/
-
-# Compiled binaries
-*.exe
-*.dll
-*.so
-*.dylib
-*.a
-*.lib
-
-# Go build artifacts
-**/*.a
-**/*.so
-**/*.dylib
-**/*.dll
-**/*.exe
-
-# Rust build artifacts
-**/*.rlib
-**/*.dSYM/
-**/deps/
-
-# Logs
-*.log
-
-# Environment
-.env
-.env.local
-.env.*
-**/.env
-**/.env.local
-**/.env.*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Temp files
-*.tmp
-*.temp
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# MyPy cache
-.mypy_cache/
-.pytest_cache/
-
-# Distribution artifacts
-dist/
-build/
-*.egg-info/
+go.sum
 ```
