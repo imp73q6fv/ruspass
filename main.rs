@@ -23,6 +23,13 @@ fn main() {
     
     // For demonstration, create a test database
     let db_path = "ruspass.db";
+    
+    // Remove old database file to ensure clean state for demo
+    if std::path::Path::new(db_path).exists() {
+        std::fs::remove_file(db_path).expect("Failed to remove old database");
+        println!("Removed old database file for clean demo");
+    }
+    
     let db = DatabaseService::new(db_path).expect("Failed to create database");
     
     println!("\nDatabase created at: {}", db_path);
