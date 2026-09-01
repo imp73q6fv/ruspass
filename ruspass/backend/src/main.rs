@@ -2,10 +2,9 @@ mod crypto;
 mod database;
 mod models;
 
-use std::io::{self, BufRead, Write};
 use database::DatabaseService;
-use crypto::{CryptoService, CryptoError};
-use models::{PasswordEntry, EntryRequest};
+use crypto::CryptoService;
+use models::PasswordEntry;
 
 fn main() {
     println!("=== RusPass Password Manager ===");

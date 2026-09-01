@@ -3,6 +3,14 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use crate::models::PasswordEntry;
 use crate::crypto::{CryptoService, CryptoError};
 
+// Helper function to convert CryptoError to rusqlite::Error
+fn crypto_to_sqlite_error(e: CryptoError) -> rusqlite::Error {
+    rusqlite::Error::SqliteFailure(
+        rusqlite::ffi::Error::new(rusqlite::ffi::SQLITE_ERROR),
+        Some(e.to_string()),
+    )
+}
+
 pub struct DatabaseService {
     conn: Connection,
 }
@@ -45,7 +53,7 @@ impl DatabaseService {
         Ok(DatabaseService { conn })
     }
 
-    pub fn init_database(&self, master_password: &str) -> Result<(), CryptoError> {
+    pub fn init_database(&self, _master_password: &str) -> Result<(), CryptoError> {
         let salt = CryptoService::generate_salt();
         let nonce = CryptoService::generate_nonce();
         let now = SystemTime::now()
@@ -124,10 +132,12 @@ impl DatabaseService {
             let updated_at: i64 = row.get(8)?;
 
             // Decrypt the password
-            let encrypted_bytes = CryptoService::decode_base64(&encrypted_password)?;
-            let decrypted_bytes = CryptoService::decrypt(&encrypted_bytes, key, nonce)?;
+            let encrypted_bytes = CryptoService::decode_base64(&encrypted_password)
+                .map_err(crypto_to_sqlite_error)?;
+            let decrypted_bytes = CryptoService::decrypt(&encrypted_bytes, key, nonce)
+                .map_err(crypto_to_sqlite_error)?;
             let password = String::from_utf8(decrypted_bytes)
-                .map_err(|e| CryptoError::Decryption(e.to_string()))?;
+                .map_err(|e| crypto_to_sqlite_error(CryptoError::Decryption(e.to_string())))?;
 
             Ok(PasswordEntry {
                 id: Some(id),
@@ -144,7 +154,10 @@ impl DatabaseService {
 
         let mut result = Vec::new();
         for entry in entries {
-            result.push(entry.map_err(|e| e)?);
+            match entry {
+                Ok(e) => result.push(e),
+                Err(e) => return Err(CryptoError::Decryption(e.to_string())),
+            }
         }
 
         Ok(result)
@@ -168,10 +181,12 @@ impl DatabaseService {
             let updated_at: i64 = row.get(8)?;
 
             // Decrypt the password
-            let encrypted_bytes = CryptoService::decode_base64(&encrypted_password)?;
-            let decrypted_bytes = CryptoService::decrypt(&encrypted_bytes, key, nonce)?;
+            let encrypted_bytes = CryptoService::decode_base64(&encrypted_password)
+                .map_err(crypto_to_sqlite_error)?;
+            let decrypted_bytes = CryptoService::decrypt(&encrypted_bytes, key, nonce)
+                .map_err(crypto_to_sqlite_error)?;
             let password = String::from_utf8(decrypted_bytes)
-                .map_err(|e| CryptoError::Decryption(e.to_string()))?;
+                .map_err(|e| crypto_to_sqlite_error(CryptoError::Decryption(e.to_string())))?;
 
             Ok(PasswordEntry {
                 id: Some(entry_id),
@@ -242,10 +257,12 @@ impl DatabaseService {
             let updated_at: i64 = row.get(8)?;
 
             // Decrypt the password
-            let encrypted_bytes = CryptoService::decode_base64(&encrypted_password)?;
-            let decrypted_bytes = CryptoService::decrypt(&encrypted_bytes, key, nonce)?;
+            let encrypted_bytes = CryptoService::decode_base64(&encrypted_password)
+                .map_err(crypto_to_sqlite_error)?;
+            let decrypted_bytes = CryptoService::decrypt(&encrypted_bytes, key, nonce)
+                .map_err(crypto_to_sqlite_error)?;
             let password = String::from_utf8(decrypted_bytes)
-                .map_err(|e| CryptoError::Decryption(e.to_string()))?;
+                .map_err(|e| crypto_to_sqlite_error(CryptoError::Decryption(e.to_string())))?;
 
             Ok(PasswordEntry {
                 id: Some(entry_id),
@@ -262,7 +279,10 @@ impl DatabaseService {
 
         let mut result = Vec::new();
         for entry in entries {
-            result.push(entry.map_err(|e| e)?);
+            match entry {
+                Ok(e) => result.push(e),
+                Err(e) => return Err(CryptoError::Decryption(e.to_string())),
+            }
         }
 
         Ok(result)
